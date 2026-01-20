@@ -1,3 +1,5 @@
+// components/api.ts
+
 export type ApiListResponse<Type> = {
     total: number,
     items: Type[]
@@ -25,11 +27,11 @@ export class Api {
             .then(data => Promise.reject(data.error ?? response.statusText));
     }
 
-    get(uri: string) {
+    get<T>(uri: string): Promise<T> {
         return fetch(this.baseUrl + uri, {
             ...this.options,
             method: 'GET'
-        }).then(this.handleResponse);
+        }).then(this.handleResponse) as Promise<T>;
     }
 
     post(uri: string, data: object, method: ApiPostMethods = 'POST') {
