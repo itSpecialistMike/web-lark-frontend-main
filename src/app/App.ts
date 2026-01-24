@@ -32,11 +32,10 @@ export class App {
 
 			this.products = response.items.map(item => new Product(item));
 
+			this.renderProducts()
 		} catch (error) {
 			console.error(error);
 		}
-
-		this.renderProducts()
 	}
 
 	private renderProducts(): void {
