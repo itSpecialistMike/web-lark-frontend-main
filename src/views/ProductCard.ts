@@ -15,8 +15,10 @@ export default class ProductCard {
 		this.product = product;
 		this.container = cloneTemplate(template);
 		this.events = events;
-
 		this.fillData()
+		if (this.product.isAvailable()) {
+			this.container.addEventListener('click', () => this.events.emit('product:add', this.product))
+		}
 	}
 
 	private fillData(): void {

@@ -23,3 +23,9 @@ export interface CartItem {
 	quantity: number;
 	image: string;
 }
+
+export interface CartData {
+	items: CartItem[];
+	total: number;
+	count: number;
+}
