@@ -5,36 +5,31 @@ import { cloneTemplate, ensureElement } from '../utils/utils';
 import { settings } from '../utils/constants';
 import { EventEmitter } from '../components/base/events';
 import { CartItem } from '../types';
+import Modal from '../models/Modal';
 
 
-export default class Basket {
-	private modal: HTMLElement;
-	private content: HTMLElement;
+export default class Basket extends Modal {
 	private list: HTMLElement;
 	private totalElement: HTMLElement;
-	private closeButton: HTMLElement;
 	private events: EventEmitter;
 
 	constructor(events: EventEmitter) {
-		this.modal = document.querySelector('.modal');
-		this.content = document.querySelector('.modal__content');
-		this.content.innerHTML = '';
+		super('basket-modal');
 		this.events = events;
 
 		const basketTemplate: HTMLElement = cloneTemplate('#basket');
-		this.content.appendChild(basketTemplate);
 
 		this.list = basketTemplate.querySelector('.basket__list');
 		this.totalElement = basketTemplate.querySelector('.basket__price');
-		this.closeButton = this.modal.querySelector('.modal__close');
 
-		this.closeButton.addEventListener('click', () => {
-			this.closeModal();
-		})
+		if (!this.list || !this.totalElement) {
+			throw new Error('Required basket elements not found.');
+		}
+
+		this.setContent(basketTemplate);
+
+		// const orderButton = basketTemplate.querySelector('.basket__order');
 	}
-
-	openModal(): void { this.modal.classList.add('modal_active'); }
-	closeModal(): void { this.modal.classList.remove('modal_active'); }
 
 	render(items: CartItem[], total: number): void {
 		this.list.innerHTML = '';

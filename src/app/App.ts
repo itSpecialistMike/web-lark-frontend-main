@@ -3,7 +3,7 @@ import { Api, ApiListResponse } from '../components/base/api';
 import Cart from '../models/Cart';
 import { API_URL } from '../utils/constants';
 import Product from '../models/Product';
-import ProductCard from '../views/ProductCard';
+import CartItem from '../views/CartItem';
 import { CartData } from '../types';
 import Basket from '../views/Basket';
 
@@ -26,8 +26,9 @@ export class App {
 
 		const basketButton  = document.querySelector('.header__basket');
 		basketButton?.addEventListener('click', () => {
-			this.basket.openModal()
+			this.basket.open()
 		})
+
 	}
 
 	private setupEventListeners(): void {
@@ -73,7 +74,7 @@ export class App {
 		gallery.innerHTML = '';
 
 		this.products.forEach(product =>  {
-			const card = new ProductCard(product, template, this.events);
+			const card = new CartItem(product, template, this.events);
 			const cardElement = card.render();
 			gallery.append(cardElement);
 		})
