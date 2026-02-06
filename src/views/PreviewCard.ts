@@ -29,6 +29,8 @@ export default class PreviewCard extends Modal {
 		this.categoryElement = this.previewTemplate.querySelector('.card__category');
 		this.textElement = this.previewTemplate.querySelector('.card__text');
 
+		this.addButton.addEventListener('click', () => this.events.emit('product:add', this.product));
+
 		this.render()
 		this.setContent(this.previewTemplate);
 	}
@@ -40,9 +42,5 @@ export default class PreviewCard extends Modal {
 		this.priceElement.textContent = `${this.product.price}`
 		this.categoryElement.textContent = this.product.category;
 		this.textElement.textContent = this.product.description;
-
-
-
-		this.addButton.addEventListener('click', () => this.events.emit('product:add', this.product));
 	}
 }
