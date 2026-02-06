@@ -16,7 +16,7 @@ export default class CartItem {
 		this.events = events;
 		this.fillData()
 		if (this.product.isAvailable()) {
-			this.container.addEventListener('click', () => this.events.emit('product:add', this.product))
+			this.container.addEventListener('click', () => this.events.emit('product:preview', this.product))
 		}
 	}
 

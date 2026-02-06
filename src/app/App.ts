@@ -1,3 +1,4 @@
+// app/App.ts
 import { EventEmitter } from '../components/base/events';
 import { Api, ApiListResponse } from '../components/base/api';
 import Cart from '../models/Cart';
@@ -6,6 +7,7 @@ import Product from '../models/Product';
 import CartItem from '../views/CartItem';
 import { CartData } from '../types';
 import Basket from '../views/Basket';
+import PreviewCard from '../views/PreviewCard';
 
 
 export class App {
@@ -14,6 +16,7 @@ export class App {
 	private cart: Cart
 	private products: Product[] = []
 	private basket: Basket
+	private previewCard: PreviewCard;
 
 	constructor() {
 		this.events = new EventEmitter();
@@ -51,6 +54,10 @@ export class App {
 		this.events.on('cart:remove', (data: {id: string}) => {
 			this.cart.removeItem(data.id);
 		})
+
+		this.events.on('product:preview', (product: Product) => {
+			this.renderPreview(product);
+		})
 	}
 
 	private async loadProducts(): Promise<void> {
@@ -78,5 +85,11 @@ export class App {
 			const cardElement = card.render();
 			gallery.append(cardElement);
 		})
+	}
+
+	private renderPreview(product: Product): void {
+		const card = new PreviewCard(this.events, product)
+		card.render()
+		card.open()
 	}
 }
