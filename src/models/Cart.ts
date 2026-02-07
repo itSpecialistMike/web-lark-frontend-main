@@ -1,5 +1,4 @@
 // models/Cart.ts
-
 import { CartItem } from '../types';
 import { EventEmitter } from '../components/base/events';
 import Product from './Product';

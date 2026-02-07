@@ -1,5 +1,4 @@
 // models/Product.ts
-
 import { Product as IProduct, ProductCategory } from '../types';
 
 export default class Product implements IProduct {

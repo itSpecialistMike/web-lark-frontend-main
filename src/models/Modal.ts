@@ -1,6 +1,4 @@
 // models/Modal.ts
-
-
 export default class Modal {
 	protected container: HTMLElement;
 	protected closeButton: HTMLElement;

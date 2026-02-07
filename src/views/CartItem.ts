@@ -1,5 +1,4 @@
 // views/CartItem.ts
-
 import Product from '../models/Product';
 import { cloneTemplate, ensureElement } from '../utils/utils';
 import { settings } from '../utils/constants';

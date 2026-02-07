@@ -1,5 +1,4 @@
 // components/api.ts
-
 export type ApiListResponse<Type> = {
     total: number,
     items: Type[]
@@ -21,7 +20,7 @@ export class Api {
         };
     }
 
-    protected handleResponse(response: Response): Promise<object> {
+    protected async handleResponse(response: Response): Promise<object> {
         if (response.ok) return response.json();
         else return response.json()
             .then(data => Promise.reject(data.error ?? response.statusText));
