@@ -16,8 +16,9 @@ export default class Cart {
 	}
 
 	addItem(product: Product) {
-		if (!product.isAvailable()) return;
 		const existId = this.items.findIndex(i => i.id === product.id);
+
+		const price = product.price ?? 0;
 
 		if (existId !== -1) {
 			this.items[existId].quantity++;
@@ -25,7 +26,7 @@ export default class Cart {
 			const cartItem: CartItem = {
 					id: product.id,
 					title: product.title,
-					price: product.price!,
+					price: price,
 					quantity: 1,
 					image: product.image,
 			}

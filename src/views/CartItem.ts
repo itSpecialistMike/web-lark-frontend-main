@@ -1,4 +1,4 @@
-// views/ProductCard.ts
+// views/CartItem.ts
 
 import Product from '../models/Product';
 import { cloneTemplate, ensureElement } from '../utils/utils';
@@ -15,9 +15,7 @@ export default class CartItem {
 		this.container = cloneTemplate(template);
 		this.events = events;
 		this.fillData()
-		if (this.product.isAvailable()) {
-			this.container.addEventListener('click', () => this.events.emit('product:preview', this.product))
-		}
+		this.container.addEventListener('click', () => this.events.emit('product:preview', this.product))
 	}
 
 	private fillData(): void {

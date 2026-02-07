@@ -39,7 +39,11 @@ export default class PreviewCard extends Modal {
 
 
 		this.titleElement.textContent = this.product.title;
-		this.priceElement.textContent = `${this.product.price}`
+		if (this.product.price !== null) {
+			this.priceElement.textContent = `${this.product.price}`
+		} else {
+			this.priceElement.textContent = 'Бесценно'
+		}
 		this.categoryElement.textContent = this.product.category;
 		this.textElement.textContent = this.product.description;
 	}

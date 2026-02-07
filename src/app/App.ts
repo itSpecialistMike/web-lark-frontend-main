@@ -16,7 +16,6 @@ export class App {
 	private cart: Cart
 	private products: Product[] = []
 	private basket: Basket
-	private previewCard: PreviewCard;
 
 	constructor() {
 		this.events = new EventEmitter();
@@ -25,7 +24,15 @@ export class App {
 		this.basket = new Basket(this.events);
 
 		this.setupEventListeners();
-		this.loadProducts();
+
+		this.loadProducts().then(() => {
+			this.events.emit('cart:updated', {
+				items: this.cart.getItems(),
+				total: this.cart.getTotal(),
+				count: this.cart.getCount(),
+			});
+		});
+
 
 		const basketButton  = document.querySelector('.header__basket');
 		basketButton?.addEventListener('click', () => {

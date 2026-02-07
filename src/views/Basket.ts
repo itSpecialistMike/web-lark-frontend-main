@@ -51,7 +51,11 @@ export default class Basket extends Modal {
 			}
 			if (indexElement) indexElement.textContent = (index + 1).toString();
 			if (titleElement) titleElement.textContent = item.title
-			if (priceElement) priceElement.textContent = `${item.price} ${settings.currency}`
+			if (priceElement) {
+				item.price == 0 ? priceElement.textContent = 'Бесценно' : priceElement.textContent = `${item.price} ${settings.currency}`
+			}
+
+
 
 
 			this.list.appendChild(itemTemplate);

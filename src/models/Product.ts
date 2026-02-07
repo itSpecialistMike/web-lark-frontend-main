@@ -1,8 +1,8 @@
 // models/Product.ts
 
-import { Product as Iproduct, ProductCategory } from '../types';
+import { Product as IProduct, ProductCategory } from '../types';
 
-export default class Product implements Iproduct {
+export default class Product implements IProduct {
 	id: string;
 	title: string;
 	description: string;
@@ -10,7 +10,7 @@ export default class Product implements Iproduct {
 	category: ProductCategory;
 	price: number | null;
 
-	constructor(product: Iproduct) {
+	constructor(product: IProduct) {
 		this.id = product.id;
 		this.title = product.title;
 		this.description = product.description;
