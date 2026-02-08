@@ -9,6 +9,9 @@ import { CartData, OrderFormData } from '../types';
 import Basket from '../views/Basket';
 import PreviewCard from '../views/PreviewCard';
 import OrderForm from '../views/OrderForm';
+import ContentForm from '../views/ContentForm';
+import { Order } from '../models/Order';
+import Success from '../views/Success';
 
 
 export class App {
@@ -19,6 +22,10 @@ export class App {
 	private basket: Basket
 	private orderForm: OrderForm
 	private preview: PreviewCard;
+	private orderData: Partial<OrderFormData> = {}
+	private contentForm: ContentForm
+	private success: Success
+
 
 	constructor() {
 		this.events = new EventEmitter();
@@ -26,7 +33,9 @@ export class App {
 		this.cart = new Cart(this.events);
 		this.basket = new Basket(this.events);
 		this.orderForm = new OrderForm(this.events);
-		this.preview = new PreviewCard(this.events) // он тут ждет вротым аргументом продукт, но какой это продукт еще не известно
+		this.preview = new PreviewCard(this.events);
+		this.contentForm = new ContentForm(this.events);
+		this.success = new Success();
 
 		this.setupEventListeners();
 
@@ -73,8 +82,26 @@ export class App {
 
 		this.events.on('order:open', (): void => {
 			this.basket.close();
-			console.log('гыга откройся блять')
 			this.orderForm.open();
+		})
+
+		this.events.on('order:step1', (data): void => {
+			this.orderData = {
+				...this.orderData, ...data
+			}
+
+			console.log(data);
+			this.orderForm.close();
+			this.contentForm.open();
+		})
+
+		this.events.on('order:step2', (data): void => {
+			this.orderData = {
+				...this.orderData, ...data
+			}
+
+			this.contentForm.close();
+			this.createOrder()
 		})
 	}
 
@@ -103,5 +130,23 @@ export class App {
 			const cardElement = card.render();
 			gallery.append(cardElement);
 		})
+	}
+
+	private async createOrder(): Promise<void> {
+		const order = new Order(this.api, this.cart);
+
+		order.create(this.orderData as OrderFormData)
+			.then((response) => {
+				this.success.render(response.total) //
+				this.success.open()
+				this.cart.clear()
+				this.cart.update()
+				this.orderData = {};
+
+			})
+		.catch(error => {
+			console.error(error);
+		})
+
 	}
 }

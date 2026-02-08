@@ -20,7 +20,7 @@ export default class Cart {
 		const price = product.price ?? 0;
 
 		if (existId !== -1) {
-			this.items[existId].quantity++;
+			return// this.items[existId].quantity++; (не такое поведение требует апи)
 		} else {
 			const cartItem: CartItem = {
 					id: product.id,
@@ -60,7 +60,7 @@ export default class Cart {
 		localStorage.setItem('cart', JSON.stringify(this.items));
 	}
 
-	private update() {
+	update() {
 		this.events.emit('cart:updated', {
 			items: this.getItems(),
 			total: this.getTotal(),
@@ -74,5 +74,10 @@ export default class Cart {
 
 	getCount(): number {
 		return this.items.reduce((sum, item) => sum + item.quantity, 0);
+	}
+
+	clear(): void {
+		this.items = [];
+		this.saveToStorage()
 	}
 }

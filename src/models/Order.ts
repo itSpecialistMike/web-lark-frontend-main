@@ -1,7 +1,7 @@
 // models/Order.ts
 import { Api } from '../components/base/api';
 import Cart from './Cart';
-import { OrderRequest, OrderFormData } from '../types';
+import { OrderRequest, OrderFormData, OrderResponse } from '../types';
 
 
 export class Order {
@@ -13,16 +13,16 @@ export class Order {
 		this.cart = cart;
 	}
 
-	create(data: OrderFormData) {
+	async create(data: OrderFormData): Promise<OrderResponse> {
 		const request: OrderRequest = {
 			payment: data.payment,
 			address: data.address,
 			email: data.email,
 			phone: data.phone,
 			total: this.cart.getTotal(),
-			items: this.cart.getItems().map(i => i.id)
-		}
+			items: this.cart.getItems().map((i) => i.id),
+		};
 
-		return this.api.post('/orders', request)
+		return await this.api.post('/order/', request) as OrderResponse;
 	}
 }

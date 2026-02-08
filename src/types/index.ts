@@ -47,3 +47,8 @@ export interface OrderRequest extends OrderFormData {
 	items: string[];
 }
 
+export interface OrderResponse {
+	id: string;
+	total: number;
+}
+
