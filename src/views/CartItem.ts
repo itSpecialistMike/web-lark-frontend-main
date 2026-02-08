@@ -1,7 +1,6 @@
 // views/CartItem.ts
 import Product from '../models/Product';
-import { cloneTemplate, ensureElement } from '../utils/utils';
-import { settings } from '../utils/constants';
+import { cloneTemplate } from '../utils/utils';
 import { EventEmitter } from '../components/base/events';
 
 export default class CartItem {

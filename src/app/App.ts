@@ -5,9 +5,10 @@ import Cart from '../models/Cart';
 import { API_URL } from '../utils/constants';
 import Product from '../models/Product';
 import CartItem from '../views/CartItem';
-import { CartData } from '../types';
+import { CartData, OrderFormData } from '../types';
 import Basket from '../views/Basket';
 import PreviewCard from '../views/PreviewCard';
+import OrderForm from '../views/OrderForm';
 
 
 export class App {
@@ -16,12 +17,16 @@ export class App {
 	private cart: Cart
 	private products: Product[] = []
 	private basket: Basket
+	private orderForm: OrderForm
+	private preview: PreviewCard;
 
 	constructor() {
 		this.events = new EventEmitter();
 		this.api = new Api(API_URL);
 		this.cart = new Cart(this.events);
 		this.basket = new Basket(this.events);
+		this.orderForm = new OrderForm(this.events);
+		this.preview = new PreviewCard(this.events) // он тут ждет вротым аргументом продукт, но какой это продукт еще не известно
 
 		this.setupEventListeners();
 
@@ -63,7 +68,13 @@ export class App {
 		})
 
 		this.events.on('product:preview', (product: Product) => {
-			this.renderPreview(product);
+			this.preview.render(product);
+		})
+
+		this.events.on('order:open', (): void => {
+			this.basket.close();
+			console.log('гыга откройся блять')
+			this.orderForm.open();
 		})
 	}
 
@@ -92,11 +103,5 @@ export class App {
 			const cardElement = card.render();
 			gallery.append(cardElement);
 		})
-	}
-
-	private renderPreview(product: Product): void {
-		const card = new PreviewCard(this.events, product)
-		card.render()
-		card.open()
 	}
 }

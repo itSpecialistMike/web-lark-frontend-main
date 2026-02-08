@@ -15,5 +15,4 @@ const product = new Product(mockProductData);
 
 // Проверяем
 console.log('Product created:', product.title);
-console.log('Is available?', product.isAvailable());
 console.log('Price:', product.price);

@@ -1,4 +1,5 @@
 // types/index.ts
+// Тип категории продукта
 export type ProductCategory =
 	| 'софт-скил'
 	| 'хард-скил'
@@ -6,6 +7,7 @@ export type ProductCategory =
 	| 'кнопка'
 	| 'другое';
 
+// Интерфейс продукта
 export interface Product {
 	id: string;
 	title: string;
@@ -15,7 +17,7 @@ export interface Product {
 	price: number | null;
 }
 
-// Тип для товара в корзине
+// Интерфейс товара в корзине
 export interface CartItem {
 	id: string;
 	title: string;
@@ -24,8 +26,24 @@ export interface CartItem {
 	image: string;
 }
 
+// Интерфейс корзины
 export interface CartData {
 	items: CartItem[];
 	total: number;
 	count: number;
 }
+
+// Интерфейс формы заказа
+export interface OrderFormData {
+	payment: 'card' | 'cash';
+	address: string;
+	email: string;
+	phone: string;
+}
+
+// Интерфейс для запроса к /order
+export interface OrderRequest extends OrderFormData {
+	total: number;
+	items: string[];
+}
+

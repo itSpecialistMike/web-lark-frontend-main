@@ -8,18 +8,17 @@ import Modal from '../models/Modal';
 
 export default class PreviewCard extends Modal {
 	private events: EventEmitter;
-	private product: Product;
 	private previewTemplate: HTMLElement;
 	private addButton: HTMLElement;
 	private titleElement: HTMLElement;
 	private priceElement: HTMLElement;
 	private categoryElement: HTMLElement;
 	private textElement: HTMLElement;
+	private product: Product | null = null;
 
 
-	constructor(events: EventEmitter, product: Product) {
-		super('preview-modal');
-		this.product = product;
+	constructor(events: EventEmitter) {
+		super('modal-container');
 		this.events = events;
 		this.previewTemplate = cloneTemplate('#card-preview');
 		this.addButton = this.previewTemplate.querySelector('.card__button')
@@ -29,21 +28,19 @@ export default class PreviewCard extends Modal {
 		this.textElement = this.previewTemplate.querySelector('.card__text');
 
 		this.addButton.addEventListener('click', () => this.events.emit('product:add', this.product));
-
-		this.render()
-		this.setContent(this.previewTemplate);
 	}
 
-	render(): void {
-
-
-		this.titleElement.textContent = this.product.title;
-		if (this.product.price !== null) {
-			this.priceElement.textContent = `${this.product.price}`
+	render(product: Product): void {
+		this.product = product;
+		this.setContent(this.previewTemplate);
+		this.titleElement.textContent = product.title;
+		if (product.price !== null) {
+			this.priceElement.textContent = `${product.price}`
 		} else {
 			this.priceElement.textContent = 'Бесценно'
 		}
-		this.categoryElement.textContent = this.product.category;
-		this.textElement.textContent = this.product.description;
+		this.categoryElement.textContent = product.category;
+		this.textElement.textContent = product.description;
+		this.open()
 	}
 }

@@ -3,6 +3,7 @@ export default class Modal {
 	protected container: HTMLElement;
 	protected closeButton: HTMLElement;
 	protected content: HTMLElement;
+	protected view: HTMLElement | null = null;
 
 	constructor(containerId: string) {
 		const container = document.getElementById(containerId);
@@ -38,6 +39,7 @@ export default class Modal {
 	}
 
 	open():void {
+		// this.setContent(this.view); возможное архитектурное улучшение, пока костылить т-к модалка не знает какой в нее темплейт сунут
 		this.container.classList.add('modal_active');
 	}
 
@@ -50,7 +52,7 @@ export default class Modal {
 	}
 
 	setContent(content: HTMLElement): void {
-		this.content.innerHTML = ''
+		this.clearContent()
 		this.content.appendChild(content);
 	}
 

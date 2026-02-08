@@ -17,9 +17,5 @@ export default class Product implements IProduct {
 		this.category = product.category;
 		this.price = product.price;
 	}
-
-	isAvailable() : boolean  {
-		return this.price !== null && this.price > 0;
-	}
 }
 

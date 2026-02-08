@@ -1,6 +1,5 @@
 //views/Basket.ts
-import Product from '../models/Product';
-import { cloneTemplate, ensureElement } from '../utils/utils';
+import { cloneTemplate } from '../utils/utils';
 import { settings } from '../utils/constants';
 import { EventEmitter } from '../components/base/events';
 import { CartItem } from '../types';
@@ -11,23 +10,25 @@ export default class Basket extends Modal {
 	private list: HTMLElement;
 	private totalElement: HTMLElement;
 	private events: EventEmitter;
+	private template: HTMLElement;
 
 	constructor(events: EventEmitter) {
-		super('basket-modal');
+		super('modal-container');
 		this.events = events;
 
-		const basketTemplate: HTMLElement = cloneTemplate('#basket');
+		this.template = cloneTemplate('#basket');
+		this.list = this.template.querySelector('.basket__list');
+		this.totalElement = this.template.querySelector('.basket__price');
 
-		this.list = basketTemplate.querySelector('.basket__list');
-		this.totalElement = basketTemplate.querySelector('.basket__price');
+		const orderButton = this.template.querySelector('.basket__button');
+		orderButton.addEventListener('click', () => {
+			this.events.emit('order:open');
+		});
+	}
 
-		if (!this.list || !this.totalElement) {
-			throw new Error('Required basket elements not found.');
-		}
-
-		this.setContent(basketTemplate);
-
-		// const orderButton = basketTemplate.querySelector('.basket__order');
+	open() {
+		this.setContent(this.template); // это уже не костыль, а кресло каталка
+		super.open();
 	}
 
 	render(items: CartItem[], total: number): void {
@@ -53,9 +54,6 @@ export default class Basket extends Modal {
 			if (priceElement) {
 				item.price == 0 ? priceElement.textContent = 'Бесценно' : priceElement.textContent = `${item.price} ${settings.currency}`
 			}
-
-
-
 
 			this.list.appendChild(itemTemplate);
 		});
