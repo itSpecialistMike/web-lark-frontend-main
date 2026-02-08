@@ -3,10 +3,11 @@ export default class Modal {
 	protected container: HTMLElement;
 	protected closeButton: HTMLElement;
 	protected content: HTMLElement;
-	protected view: HTMLElement | null = null;
+	protected pageWrapper: HTMLElement;
 
 	constructor(containerId: string) {
 		const container = document.getElementById(containerId);
+		this.pageWrapper = document.querySelector('.page__wrapper');
 
 		if (!container) {
 			throw new Error(`No container with id ${containerId}`);
@@ -41,10 +42,12 @@ export default class Modal {
 	open():void {
 		// this.setContent(this.view); возможное архитектурное улучшение, пока костылить т-к модалка не знает какой в нее темплейт сунут
 		this.container.classList.add('modal_active');
+		this.pageWrapper.classList.add('page__wrapper_locked');
 	}
 
 	close(): void {
 		this.container.classList.remove('modal_active');
+		this.pageWrapper.classList.remove('page__wrapper_locked');
 	}
 
 	isOpened(): boolean {
