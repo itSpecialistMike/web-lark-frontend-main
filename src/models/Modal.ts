@@ -40,7 +40,6 @@ export default class Modal {
 	}
 
 	open():void {
-		// this.setContent(this.view); возможное архитектурное улучшение, пока костылить т-к модалка не знает какой в нее темплейт сунут
 		this.container.classList.add('modal_active');
 		this.pageWrapper.classList.add('page__wrapper_locked');
 	}
