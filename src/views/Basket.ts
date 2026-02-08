@@ -4,6 +4,7 @@ import { settings } from '../utils/constants';
 import { EventEmitter } from '../components/base/events';
 import { CartItem } from '../types';
 import Modal from '../models/Modal';
+import Cart from '../models/Cart';
 
 
 export default class Basket extends Modal {
@@ -11,17 +12,20 @@ export default class Basket extends Modal {
 	private totalElement: HTMLElement;
 	private events: EventEmitter;
 	private template: HTMLElement;
+	private total: Cart;
+	private orderButton: HTMLButtonElement;
 
 	constructor(events: EventEmitter) {
 		super('modal-container');
 		this.events = events;
-
 		this.template = cloneTemplate('#basket');
 		this.list = this.template.querySelector('.basket__list');
 		this.totalElement = this.template.querySelector('.basket__price');
 
-		const orderButton = this.template.querySelector('.basket__button');
-		orderButton.addEventListener('click', () => {
+
+
+		this.orderButton = this.template.querySelector('.basket__button');
+		this.orderButton.addEventListener('click', () => {
 			this.events.emit('order:open');
 		});
 	}
@@ -43,6 +47,7 @@ export default class Basket extends Modal {
 			const deleteButton = itemTemplate.querySelector('.basket__item-delete');
 
 
+
 			if (deleteButton) {
 				deleteButton.addEventListener('click', () => {
 					this.events.emit('cart:remove', {id: item.id});
@@ -54,11 +59,19 @@ export default class Basket extends Modal {
 			if (priceElement) {
 				item.price == 0 ? priceElement.textContent = 'Бесценно' : priceElement.textContent = `${item.price} ${settings.currency}`
 			}
-
 			this.list.appendChild(itemTemplate);
 		});
 
+
 		this.totalElement.textContent = `${total} ${settings.currency}`;
+
+		if (total < 1) {
+			this.orderButton.disabled = true;
+			this.orderButton.textContent = 'Слишком мало для заказа';
+		} else {
+			this.orderButton.disabled = false;
+			this.orderButton.textContent = 'Оформить';
+		}
 	}
 
 }

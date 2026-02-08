@@ -80,6 +80,11 @@ export class App {
 			this.preview.render(product);
 		})
 
+		this.events.on('cart:check', (data: {productId: string, callback: (isInCart: boolean) => void}) => {
+			const isInCart = this.cart.getItems().some(item => item.id === data.productId);
+			data.callback(isInCart);
+		});
+
 		this.events.on('order:open', (): void => {
 			this.basket.close();
 			this.orderForm.open();
