@@ -59,11 +59,9 @@ export class App {
 		// подписать на события
 		this.events.on('product:add', (product: Product): void => {
 			this.cart.addItem(product);
-			console.log('Товар добавлен', product.title);
 		})
 
 		this.events.on('cart:updated', (data: CartData) => {
-			console.log('корзина обновлена', data);
 			this.basket.render(data.items, data.total)
 
 			const counter = document.querySelector('.header__basket-counter');
